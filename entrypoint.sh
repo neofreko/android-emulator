@@ -29,6 +29,10 @@ fi
 # Run sshd
 /usr/sbin/sshd
 
+# re-run adb server, it's not running yet somehow
+RUN /usr/local/android-sdk/platform-tools/adb kill-server
+RUN /usr/local/android-sdk/platform-tools/adb start-server
+
 # Detect ip and forward ADB ports outside to outside interface
 ip=$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')
 socat tcp-listen:5554,bind=$ip,fork tcp:127.0.0.1:5554 &
